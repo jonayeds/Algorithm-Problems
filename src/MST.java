@@ -5,6 +5,7 @@ public class MST {
     public static int calculateMinimumWeight(ArrayList<int[]> edges){
         int minWeight = 0;
         ArrayList<Integer> connectedUnion = new ArrayList<>();
+        ArrayList<int[]>  selectedPath = new ArrayList<>();
         for(int[] edge : edges){
             boolean firstVertex = false, secondVertex = false;
             for(int vertex : connectedUnion){
@@ -13,7 +14,20 @@ public class MST {
             }
             if(!firstVertex) connectedUnion.add(edge[0]);
             if(!secondVertex) connectedUnion.add(edge[1]);
-            if(!firstVertex || !secondVertex) minWeight+=edge[2];
+            if(!firstVertex || !secondVertex){
+                minWeight+=edge[2];
+                selectedPath.add(edge);
+            }
+        }
+        System.out.println("number of edges: "+ connectedUnion.size());
+        System.out.print("Connected union: ");
+        for (int vertex : connectedUnion) {
+            System.out.print(vertex + " ");
+        }
+        System.out.println("\n\nSelected path ");
+        for(int[] path : selectedPath){
+
+            System.out.println("Parent: "+ path[0]+ " Child: "+ path[1]+ " Weight: "+ path[2]);
         }
         return minWeight;
     }
@@ -31,17 +45,20 @@ public class MST {
         for(int[] edge : edges) {
             System.out.println("Parent: "+ edge[0]+ " Child: "+ edge[1]+ " Weight: "+ edge[2]);
         }
+
         edges.sort(new Comparator<int[]>() {
             @Override
             public int compare(int[] o1, int[] o2) {
                 return o1[2]<o2[2]?-1:1;
             }
         });
+
         System.out.println("\nAfter Sorting");
         for(int[] edge : edges) {
             System.out.println("Parent: "+ edge[0]+ " Child: "+ edge[1]+ " Weight: "+ edge[2]);
         }
-        int m = calculateMinimumWeight(edges);
-        System.out.println("Minimum Spanning Tree: "+ m);
+        int min = calculateMinimumWeight(edges);
+        System.out.println("\nMinimum Spanning Tree: "+ min);
+
     }
 }
