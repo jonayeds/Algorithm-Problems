@@ -26,9 +26,9 @@ public class MST {
         }
         System.out.println("\n\nSelected path ");
         for(int[] path : selectedPath){
-
             System.out.println("Parent: "+ path[0]+ " Child: "+ path[1]+ " Weight: "+ path[2]);
         }
+        System.out.println("\nMinimum Spanning Tree: "+ minWeight);
         return minWeight;
     }
 
@@ -58,7 +58,31 @@ public class MST {
             System.out.println("Parent: "+ edge[0]+ " Child: "+ edge[1]+ " Weight: "+ edge[2]);
         }
         int min = calculateMinimumWeight(edges);
-        System.out.println("\nMinimum Spanning Tree: "+ min);
+
+//        int i=0;
+        ArrayList<int[]> criticalEdges = new ArrayList<>();
+        ArrayList<int[]> pseudoCriticalEdges = new ArrayList<>();
+        for(int i=0; i< edges.size(); i++) {
+            int[] edge = edges.get(i);
+            edges.remove(edge);
+            int newMin = calculateMinimumWeight(edges);
+//            System.out.println(edges.size());
+            if(newMin > min){
+                criticalEdges.add(edge);
+            }else if(newMin == min){
+                pseudoCriticalEdges.add(edge);
+            }
+            edges.add(i, edge);
+        }
+
+        System.out.println("\nCritical Edges");
+        for(int[] edge : criticalEdges) {
+            System.out.println("Parent: "+ edge[0]+ " Child: "+ edge[1]+ " Weight: "+ edge[2]);
+        }
+        System.out.println("\nPseudo Critical Edges");
+        for(int[] edge : pseudoCriticalEdges) {
+            System.out.println("Parent: "+ edge[0]+ " Child: "+ edge[1]+ " Weight: "+ edge[2]);
+        }
 
     }
 }
