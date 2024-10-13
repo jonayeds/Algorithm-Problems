@@ -29,6 +29,9 @@ public class MinimumStandingTree {
                 if(treeArray[ultimateRoot1] <= treeArray[ultimateRoot2]){
                     treeArray[ultimateRoot1] += treeArray[ultimateRoot2];
                     treeArray[ultimateRoot2] = ultimateRoot1;
+                }else {
+                    treeArray[ultimateRoot2] += treeArray[ultimateRoot1];
+                    treeArray[ultimateRoot1] = ultimateRoot2;
                 }
                 minWeight+= edge[2];
                 System.out.println("Source: "+ edge[0]+ " Destination: "+ edge[1]+ " Weight: "+ edge[2]);
