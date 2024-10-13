@@ -18,13 +18,13 @@ public class MinimumStandingTree {
         int minWeight = 0;
         int[] treeArray = new int[numberOfVertices];
         Arrays.fill(treeArray, -1);
-        System.out.println("Selected edges");
+//        System.out.println("Selected edges");
         for(int[] edge : graph) {
-            System.out.print("\nTree Array: ");
-            for(int i=0; i<treeArray.length; i++) System.out.print(treeArray[i]+" ");
+//            System.out.print("\nTree Array: ");
+//            for(int i=0; i<treeArray.length; i++) System.out.print(treeArray[i]+" ");
             int ultimateRoot1 = findRoot(treeArray, edge[0]);
             int ultimateRoot2 = findRoot(treeArray, edge[1]);
-            System.out.println("ultimateRoot1 = " + ultimateRoot1+ " ultimateRoot2 = " + ultimateRoot2);
+//            System.out.println("ultimateRoot1 = " + ultimateRoot1+ " ultimateRoot2 = " + ultimateRoot2);
             if(ultimateRoot1 != ultimateRoot2){
                 if(treeArray[ultimateRoot1] <= treeArray[ultimateRoot2]){
                     treeArray[ultimateRoot1] += treeArray[ultimateRoot2];
@@ -34,7 +34,7 @@ public class MinimumStandingTree {
                     treeArray[ultimateRoot1] = ultimateRoot2;
                 }
                 minWeight+= edge[2];
-                System.out.println("Source: "+ edge[0]+ " Destination: "+ edge[1]+ " Weight: "+ edge[2]);
+//                System.out.println("Source: "+ edge[0]+ " Destination: "+ edge[1]+ " Weight: "+ edge[2]);
             }
         }
 
@@ -69,6 +69,29 @@ public class MinimumStandingTree {
         int min =  calculateMinimumStandingTree(edges, numberOfVertices);
         System.out.println("Minimum Spanning tree: " + min);
 
+
+        ArrayList<int[]> criticalEdges = new ArrayList<>();
+        ArrayList<int[]> pseudoCriticalEdges = new ArrayList<>();
+        for(int i=0; i< edges.size(); i++) {
+            int[] edge = edges.get(i);
+            edges.remove(edge);
+            int newMin = calculateMinimumStandingTree(edges, numberOfVertices);
+//            System.out.println(edges.size());
+            if(newMin > min){
+                criticalEdges.add(edge);
+            }else if(newMin == min){
+                pseudoCriticalEdges.add(edge);
+            }
+            edges.add(i, edge);
+        }
+        System.out.println("\nCritical Edges");
+        for(int[] edge : criticalEdges) {
+            System.out.println("Parent: "+ edge[0]+ " Child: "+ edge[1]+ " Weight: "+ edge[2]);
+        }
+        System.out.println("\nPseudo Critical Edges");
+        for(int[] edge : pseudoCriticalEdges) {
+            System.out.println("Parent: "+ edge[0]+ " Child: "+ edge[1]+ " Weight: "+ edge[2]);
+        }
 
     }
 }
