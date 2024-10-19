@@ -1,6 +1,4 @@
 import java.util.ArrayList;
-
-
 public class BreadthFirstSearch {
     public static void main(String[] args) {
         ArrayList<Integer> tree = new ArrayList<>();
@@ -16,14 +14,13 @@ public class BreadthFirstSearch {
             System.out.print(tree.get(i)+" ");
         }
         ArrayList<Integer> queue = new ArrayList<>();
-
         int[] selectedValues = new int[tree.size()/2];
         queue.add(tree.getFirst());
-
         int current =0;
         int level = 0;
         while (!queue.isEmpty()) {
             int n = queue.size();
+            System.out.println();
             int maxElement =0;
 
             while (n > 0) {
@@ -32,15 +29,16 @@ public class BreadthFirstSearch {
                    int element = queue.getFirst();
                    maxElement = Math.max(maxElement, element);
                }
-               if(tree.size()>= Math.pow(2, level+2)-1){
-                   queue.add(tree.get(current*2+1));
-                   queue.add(tree.get(current*2+2));
+               if(tree.size() >= Math.pow(2, level+2)-1){
+                   queue.add(tree.get((current*2)+1));
+                   queue.add(tree.get((current*2)+2));
                    current++;
                }
-                queue.removeFirst();
                 n--;
+                queue.removeFirst();
             }
             selectedValues[level] = maxElement;
+
             level++;
         }
         System.out.print("\nselected values: " );

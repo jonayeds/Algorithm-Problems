@@ -1,9 +1,8 @@
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 
-public class MinimumStandingTree {
+public class MinimumSpanningTree {
 
     public static int findRoot(int[] treeArray, int vertex){
         int pointer=vertex;
@@ -14,11 +13,17 @@ public class MinimumStandingTree {
         return pointer;
     }
 
-    public static int calculateMinimumStandingTree(ArrayList<int[]> graph, int numberOfVertices) {
+    public static int calculateMinimumSpanningTree(ArrayList<int[]> graph, int numberOfVertices, int[] includedEdge) {
         int minWeight = 0;
         int[] treeArray = new int[numberOfVertices];
         Arrays.fill(treeArray, -1);
 //        System.out.println("Selected edges");
+        if(includedEdge != null){
+            treeArray[includedEdge[1]]= includedEdge[0];
+            treeArray[includedEdge[0]]= -2;
+            minWeight += includedEdge[2];
+
+        }
         for(int[] edge : graph) {
 //            System.out.print("\nTree Array: ");
 //            for(int i=0; i<treeArray.length; i++) System.out.print(treeArray[i]+" ");
@@ -66,21 +71,23 @@ public class MinimumStandingTree {
         for(int[] edge : edges) {
             System.out.println("Source: "+ edge[0]+ " Destination: "+ edge[1]+ " Weight: "+ edge[2]);
         }
-        int min =  calculateMinimumStandingTree(edges, numberOfVertices);
+        int min =  calculateMinimumSpanningTree(edges, numberOfVertices, null);
         System.out.println("Minimum Spanning tree: " + min);
 
 
         ArrayList<int[]> criticalEdges = new ArrayList<>();
         ArrayList<int[]> pseudoCriticalEdges = new ArrayList<>();
+
         for(int i=0; i< edges.size(); i++) {
             int[] edge = edges.get(i);
             edges.remove(edge);
-            int newMin = calculateMinimumStandingTree(edges, numberOfVertices);
+            int newMin = calculateMinimumSpanningTree(edges, numberOfVertices, null);
 //            System.out.println(edges.size());
             if(newMin > min){
                 criticalEdges.add(edge);
             }else if(newMin == min){
-                pseudoCriticalEdges.add(edge);
+                int includedMin = calculateMinimumSpanningTree(edges, numberOfVertices, edge);
+                if(includedMin == min) pseudoCriticalEdges.add(edge);
             }
             edges.add(i, edge);
         }
